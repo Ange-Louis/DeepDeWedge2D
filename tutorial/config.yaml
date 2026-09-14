@@ -4,15 +4,17 @@ shared:
   tomo1_files: 
     - "tutorial/tutorial_data/tomo_odd_frames.mrc"
   mw_angle: 50
-  standardize_full_tomos: false
+  subtomo_size : 128
+  standardize_full_tomos: true
   num_workers: 8
   gpu: [0]
   seed: 42
+  project_dir: "tutorial/tutorial_project"  # AJOUTÉ : requis par les 3 commandes + lu directement dans Step1
 
 prepare_data:
   mask_files: []
   # STRIDES 2D ! Adapte l'extraction pour des images 2D
-  subtomo_extraction_strides: [80, 3800] 
+  subtomo_extraction_strides: [80, 80] 
   val_fraction: 0.1
   extract_larger_subtomos_for_rotating: false
 
@@ -24,7 +26,7 @@ fit_model2:
   adam_params_dict: 
     lr: 0.004
   num_epochs: 400
-  batch_size: 64
+  batch_size: 16
   update_subtomo_missing_wedges_every_n_epochs: 9999
   check_val_every_n_epochs: 1
   save_n_models_with_lowest_val_loss: 1
@@ -34,4 +36,6 @@ fit_model2:
 refine_tomogram:
   batch_size: 10
   recompute_normalization: false
-  
+  # TODO : à renseigner une fois fit-model2 terminé, ex. :
+  # "tutorial/tutorial_project/logs/version_0/checkpoints/val_loss/epoch=399-val_loss=0.01234.ckpt"
+  model_checkpoint_file: "tutorial/tutorial_project/logs/version_0/checkpoints/val_loss/CHANGE_ME.ckpt"
